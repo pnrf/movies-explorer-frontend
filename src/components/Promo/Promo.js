@@ -4,12 +4,12 @@ import bgrImg from '../../images/promo-bgr-img.svg';
 function Promo() {
   return (
     <section className="promo">
+      <img className="promo__bgr-img" src={bgrImg} alt="Фоновое изображение"/>
       <div className="promo__container">
         <h1 className="promo__title">Учебный проект студента факультета Веб-разработки.</h1>
-        <span className="promo__subtitle">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</span>
+        <p className="promo__subtitle">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
         <a className="promo__link" href="#about-project">Узнать больше</a>
       </div>
-      <img className="promo__bgr-img" src={bgrImg} alt="Фоновое изображение"/>
     </section>
   );
 };

@@ -1,0 +1,75 @@
+.about-project {
+  margin: 70px 18px;
+  text-align: left;
+}
+
+.about-project__title {
+  margin: 0;
+  padding: 0 0 28px;
+  border-bottom: 1px solid #000;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+}
+
+.about-project__thesis-list {
+  margin: 60px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-project__thesis-list-item {
+  margin: 56px 0 0;
+}
+
+.about-project__thesis-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+}
+
+.about-project__thesis-text {
+  margin: 16px 0 0;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.about-project__timeline {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.about-project__timeline-item:first-child {
+  flex-grow: 1;
+}
+
+.about-project__timeline-item:last-child {
+  flex-grow: 4;
+}
+
+.about-project__timeline-interval {
+  margin: 0;
+  padding: 11px 10px;
+  background-color: #F2F2F2;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.about-project__timeline-interval_type_highlighted {
+  background-color: #2BE080;
+}
+
+.about-project__timeline-caption {
+  color: #A0A0A0;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+}
