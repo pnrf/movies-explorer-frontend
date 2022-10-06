@@ -95,3 +95,35 @@
     margin: 83px 0 0;
   }
 }
+
+@media screen and (min-width: 1280px) {
+  .techs {
+    padding: 100px 70px;
+  }
+
+  .techs__wrapper {
+    margin: 90px 0 0;
+  }
+
+  .techs__text-title {
+    margin: 0 0 26px;
+  }
+
+  .techs__text-description {
+    margin: 0;
+    max-width: 460px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .techs__list {
+    margin: 100px 0 0;
+  }
+
+  .techs__list-item {
+    width: 90px;
+    height: 60px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

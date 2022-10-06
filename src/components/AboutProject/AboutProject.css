@@ -118,3 +118,24 @@
     line-height: 17px;
   }
 }
+
+@media screen and (min-width: 1280px) {
+  .about-project {
+    margin: 110px 70px;
+  }
+
+  .about-project__thesis-list {
+    margin: 70px 0 110px;
+    gap: 40px;
+  }
+
+  .about-project__thesis-text {
+    margin: 26px 0 0;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .about-project__timeline-interval {
+    padding: 9px 14px;
+  }
+}

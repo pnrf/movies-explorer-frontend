@@ -56,7 +56,6 @@
 
   .promo__title {
     margin: 48px 44px 0;
-    font-weight: 400;
     font-size: 40px;
     line-height: 50px;
   }
@@ -68,5 +67,26 @@
   .promo__bgr-img {
     width: 310px;
     height: 304px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .promo {
+    padding: 75px 70px;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .promo__title {
+    margin: 0;
+    max-width: 640px;
+    font-size: 50px;
+    line-height: 58px;
+  }
+
+  .promo__subtitle {
+    margin: 36px 0 156px;
+    max-width: 310px;
   }
 }

@@ -55,7 +55,6 @@
 
 @media screen and (min-width: 768px) {
   .footer__text {
-    width: calc(100% - 60px);
     border: none;
     margin: 79px 0 0;
     padding: 0 0px 20px;
@@ -92,5 +91,7 @@
 }
 
 @media screen and (min-width: 1280px) {
-
+  .footer__nav {
+    width: calc(100% - 140px);
+  }
 }
