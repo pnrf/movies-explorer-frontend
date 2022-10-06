@@ -54,7 +54,41 @@
 }
 
 @media screen and (min-width: 768px) {
+  .footer__text {
+    width: calc(100% - 60px);
+    border: none;
+    margin: 79px 0 0;
+    padding: 0 0px 20px;
+    font-size: 13px;
+    line-height: 16px;
+  }
 
+  .footer__nav {
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 1px solid #E8E8E8;
+    width: calc(100% - 60px);
+    margin: 0;
+    padding: 20px 0;
+  }
+
+  .footer__copyright {
+    margin: 0;
+    color: #000;
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .footer__nav-list {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer__nav-item {
+    margin: 0;
+    font-size: 13px;
+    line-height: 16px;
+  }
 }
 
 @media screen and (min-width: 1280px) {

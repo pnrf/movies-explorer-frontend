@@ -75,3 +75,49 @@
 .about-me__link:hover {
   opacity: .6;
 }
+
+@media screen and (min-width: 768px) {
+  .about-me {
+    margin: 90px 50px;
+  }
+
+  .about-me__title {
+    padding: 0 0 23px;
+    font-size: 22px;
+    line-height: 27px;
+  }
+
+  .about-me__wrapper {
+    flex-direction: row-reverse;
+    margin: 66px 0 0;
+  }
+
+  .about-me__image {
+    width: 255px;
+    height: 307px;
+  }
+
+  .about-me__info {
+    margin: 0 50px 0 0;
+  }
+
+  .about-me__name {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .about-me__profession {
+    margin: 16px 0 0;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__link-list {
+    margin: 75px 0 0;
+  }
+}

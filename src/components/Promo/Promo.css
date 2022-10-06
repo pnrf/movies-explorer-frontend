@@ -8,8 +8,6 @@
   background-color: #073042;
 }
 
-.promo__container {}
-
 .promo__title {
   margin: 44px 10px 0;
   color: #fff;
@@ -51,3 +49,24 @@
   height: 206px;
 }
 
+@media screen and (min-width: 768px) {
+  .promo {
+    padding: 140px 0 76px;
+  }
+
+  .promo__title {
+    margin: 48px 44px 0;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 50px;
+  }
+
+  .promo__subtitle {
+    margin: 22px 254px 92px;
+  }
+
+  .promo__bgr-img {
+    width: 310px;
+    height: 304px;
+  }
+}
