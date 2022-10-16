@@ -16,7 +16,7 @@
   border: none;
   width: 22px;
   height: 2.5px;
-  background-color: #fff;
+  background-color: #000;
   position: relative;
 }
 
@@ -24,7 +24,7 @@
   content: '';
   width: 22px;
   height: 2.5px;
-  background-color: #fff;
+  background-color: #000;
   position: absolute;
   top: 9px;
   left: 0;
@@ -34,7 +34,7 @@
   content: '';
   width: 22px;
   height: 2.5px;
-  background-color: #fff;
+  background-color: #000;
   position: absolute;
   top: 18px;
   left: 0;
@@ -167,7 +167,6 @@
   }
 
   .navbar__menu-link {
-    color: #fff;
     font-weight: 400;
     font-size: 13px;
     line-height: 18px;
@@ -184,6 +183,5 @@
 
   .navbar__menu-account-link {
     margin: 0;
-    color: #fff;
   }
 }

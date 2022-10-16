@@ -1,6 +1,9 @@
 .header {
   display: flex;
   justify-content: space-between;
+}
+
+.header_theme_dark {
   background-color: #073042;
 }
 
