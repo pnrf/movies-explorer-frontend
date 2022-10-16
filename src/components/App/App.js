@@ -8,10 +8,12 @@ import Profile from '../Profile/Profile';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Footer from '../Footer/Footer';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { pathname } = useLocation();
+  // console.log('aaa', useLocation());
 
   // Временные функции для проверки верстки
   // --- НАЧАЛО ---
@@ -43,7 +45,7 @@ function App() {
         <Route path="/profile" element={<Profile />}/>
         <Route path="/signin" element={<Login />}/>
         <Route path="/signup" element={<Register />}/>
-        {/* <Route path="*" element={<Navigate to={isLoggedIn ? "/movies" : "/"}/>} /> */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       {pathname === '/profile' || pathname === '/signin' || pathname === '/signup' ? '' : <Footer />}
