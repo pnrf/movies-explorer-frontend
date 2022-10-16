@@ -1,13 +1,16 @@
 import './App.css';
 import { useState } from 'react';
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import Header from '../Header/Header';
 import Main from '../Main/Main';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
 import Footer from '../Footer/Footer';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { pathname } = useLocation();
 
   // Временные функции для проверки верстки
   // --- НАЧАЛО ---
@@ -30,19 +33,19 @@ function App() {
       </p>
     {/* КОНЕЦ */}
 
-      <Header isLoggedIn={isLoggedIn} />
+      {pathname === '/profile' || pathname === '/signin' || pathname === '/signup' ? '' : <Header isLoggedIn={isLoggedIn} />}
 
       <Routes>
         <Route exact path="/" element={<Main />}/>
-        {/* <Route path="/movies" element={<Movies />}/>
-        <Route path="/saved-movies" element={<SavedMovies />}/>
-        <Route path="/profile" element={<Profile />}/>
+        {/* <Route path="/movies" element={<Movies />}/> */}
+        {/* <Route path="/saved-movies" element={<SavedMovies />}/> */}
+        {/* <Route path="/profile" element={<Profile />}/> */}
         <Route path="/signin" element={<Login />}/>
         <Route path="/signup" element={<Register />}/>
-        <Route path="*" element={<Navigate to={isLoggedIn ? "/movies" : "/"}/>} /> */}
+        {/* <Route path="*" element={<Navigate to={isLoggedIn ? "/movies" : "/"}/>} /> */}
       </Routes>
 
-      <Footer />
+      {pathname === '/profile' || pathname === '/signin' || pathname === '/signup' ? '' : <Footer />}
     </div>
   );
 };
