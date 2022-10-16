@@ -1,0 +1,189 @@
+.navbar {
+  display: flex;
+  margin: 0 14px 0 0;
+  width: 100%;
+}
+
+.navbar__hamburger-overlay {
+  width: 22px;
+  height: 23px;
+  cursor: pointer;
+}
+
+.navbar__hamburger {
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 22px;
+  height: 2.5px;
+  background-color: #fff;
+  position: relative;
+}
+
+.navbar__hamburger::before {
+  content: '';
+  width: 22px;
+  height: 2.5px;
+  background-color: #fff;
+  position: absolute;
+  top: 9px;
+  left: 0;
+}
+
+.navbar__hamburger::after {
+  content: '';
+  width: 22px;
+  height: 2.5px;
+  background-color: #fff;
+  position: absolute;
+  top: 18px;
+  left: 0;
+}
+
+.navbar__menu {
+  display: none;
+}
+
+.drop-down-menu {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.drop-down-menu__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: #fff;
+  min-width: 320px;
+  width: 70%;
+}
+
+.drop-down-menu-close-btn {
+  background: right / contain no-repeat url(../../images/icons/cross.svg) transparent;
+  border: none;
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  cursor: pointer;
+  transition: opacity .2s linear;
+}
+
+.drop-down-menu-close-btn:hover {
+  opacity: .6;
+}
+
+.navbar__menu-list {
+  display: flex;
+  flex-direction: column;
+  margin: 144px 0 0;
+  padding: 0;
+  gap: 24px;
+  text-align: center;
+  list-style: none;
+}
+
+.navbar__menu-link {
+  padding: 0 0 7px;
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  transition: opacity .2s linear;
+}
+
+.navbar__menu-link:hover {
+  opacity: .6;
+  border-bottom: 2px solid #000;
+}
+
+.navbar__menu-link_active {
+  border-bottom: 2px solid #000;
+}
+
+.navbar__menu-account {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.navbar__menu-account-link {
+  margin: 0 0 48px;
+  padding: 0 43px 0 0;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  transition: opacity .2s linear;
+}
+
+.navbar__menu-account-link::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: 0;
+  background: center / 11px no-repeat url(../../images/icons/account.svg) #F9F9F9;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+}
+
+.navbar__menu-account-link:hover {
+  opacity: .6;
+}
+
+@media screen and (min-width: 1280px) {
+  .navbar__hamburger-overlay {
+    display: none;
+  }
+
+  .drop-down-menu {
+    display: none;
+  }
+
+  .navbar__menu {
+    display: flex;
+    gap: 364px;
+  }
+
+  .navbar__menu-list {
+    flex-direction: row;
+    margin: 0;
+    gap: 16px;
+  }
+
+  .navbar__menu-link {
+    color: #fff;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .navbar__menu-link:hover {
+    border-bottom: none;
+  }
+
+  .navbar__menu-link_active {
+    font-weight: 500;
+    border-bottom: none;
+  }
+
+  .navbar__menu-account-link {
+    margin: 0;
+    color: #fff;
+  }
+}
