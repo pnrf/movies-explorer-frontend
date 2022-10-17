@@ -33,3 +33,4 @@
   - Public IP Address: `51.250.79.113`
   - Frontend: `pankratov.nomorepartiesxyz.ru`
   - Backend: `api.pankratov.nomorepartiesxyz.ru`
+- дизайн-макет: [Яндекс.Диск](https://disk.yandex.ru/d/aSdNN-FR5mZbyw)
