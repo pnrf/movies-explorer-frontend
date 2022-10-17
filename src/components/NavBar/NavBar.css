@@ -147,6 +147,10 @@
 }
 
 @media screen and (min-width: 1280px) {
+  .navbar {
+    margin: 0 70px 0 0;
+  }
+
   .navbar__hamburger-overlay {
     display: none;
   }

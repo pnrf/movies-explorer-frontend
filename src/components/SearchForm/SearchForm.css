@@ -1,0 +1,150 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+  margin: 80px 14px 10px;
+  padding: 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.search__container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 46px;
+  padding: 0;
+  width: 100%;
+}
+
+.search__input {
+  width: 100%;
+  margin: 0 10px 0 0;
+  padding: 0 0 0 13px;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  background: #F9F9F9;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.search__input:focus {
+  outline: 1px solid #000;
+  border-radius: 8px;
+}
+
+.search__input::placeholder {
+  color: #A0A0A0;
+}
+
+.search__button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  flex-shrink: 0;
+  background: #3456F3;
+  transition: opacity .2s linear;
+}
+
+.search__button-bgr {
+  display: flex;
+  margin: auto;
+  width: 30px;
+  height: 30px;
+  background: transparent url('../../images/icons/arrow-right-white.svg') center / 8px no-repeat;
+  border-left: 1px solid #fff;
+}
+
+.search__button:hover {
+  opacity: .6;
+  cursor: pointer;
+}
+
+.search__filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 39px;
+}
+
+.search__tumbler {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.search__checkbox {
+  display: none;
+}
+
+.search__slider {
+  position: absolute;
+  inset: 0;
+  background-color: #EBEBEB;
+  border-radius: 20px;
+  transform: scale(-1, -1);
+}
+
+.search__slider::before {
+  content: '';
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  right: 6px;
+  top: 6px;
+  border-radius: 50%;
+  background-color: #F5F5F5;
+}
+
+.search__checkbox:checked + .search__slider {
+  background-color: #2BE080;
+}
+
+.search__checkbox:checked + .search__slider::before {
+  transform: translateX(-16px);
+}
+
+.search__tumbler-label {
+  margin: 0 0 0 13px;
+  padding: 0;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 18px;
+}
+
+@media screen and (min-width: 768px) {
+  .search {
+    margin: 80px 30px 10px;
+  }
+
+  .search__container {
+    margin: 0 0 40px;
+  }
+
+  .search__input {
+    padding: 0 0 0 20px;
+  }
+
+  .search__tumbler-label {
+    margin: 0 0 0 12px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .search {
+    margin: 80px 70px 10px;
+  }
+
+  .search__container {
+    margin: 0 0 28px;
+  }
+}
