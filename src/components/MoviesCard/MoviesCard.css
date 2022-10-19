@@ -24,6 +24,7 @@
 }
 
 .card__title {
+  width: 220px;
   margin: 0;
   padding: 0;
   font-weight: 500;

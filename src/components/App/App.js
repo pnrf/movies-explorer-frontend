@@ -12,9 +12,6 @@ import Register from '../Register/Register';
 import Footer from '../Footer/Footer';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
-import MoviesDB from '../../utils/MoviesDB';
-console.log(MoviesDB);
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { pathname } = useLocation();
@@ -28,6 +25,7 @@ function App() {
     setIsLoggedIn(false);
   }
   // --- КОНЕЦ ---
+
 
   return (
     <div className="App">
