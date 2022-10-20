@@ -55,7 +55,7 @@ function Register({ onRegister }) {
                 onChange={handleInputChange}
                 required
               />
-              <span className={'form__error form__error_visible'}>Что-то пошло не так...</span>
+              <span className={`form__error ${errors.name && 'form__error_visible'}`}>{errors.name}</span>
             </label>
 
             <label className="form__item">

@@ -86,11 +86,11 @@ function App() {
 
         <Routes>
           <Route exact path="/" element={<Main />}/>
-          <Route path="/movies" element={<ProtectedRoute component={Movies} isLoggedIn={isLoggedIn} isLoading={isLoading} />}/>
+          <Route path="/movies" element={<ProtectedRoute component={Movies} isLoggedIn={isLoggedIn} isLoading={isLoading}/>}/>
           <Route path="/saved-movies" element={<ProtectedRoute component={SavedMovies} isLoggedIn={isLoggedIn} isLoading={isLoading}/>}/>
           <Route path="/profile" element={<ProtectedRoute component={Profile} isLoggedIn={isLoggedIn} isLoading={isLoading} onLogout={onLogout}/>}/>
-          <Route path="/signin" element={<Login onLogin={onLogin}/>}/>
-          <Route path="/signup" element={<Register onRegister={onRegister}/>}/>
+          <Route path="/signin" element={isLoggedIn ? <Navigate to="/movies" /> : <Login onLogin={onLogin}/>}/>
+          <Route path="/signup" element={isLoggedIn ? <Navigate to="/movies" /> : <Register onRegister={onRegister}/>}/>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
 

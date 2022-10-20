@@ -6,9 +6,9 @@ import MainApi from '../../utils/MainApi';
 function Profile({ onLogout }) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
-  const [lastName, setLastName] = useState(currentUser.name);
+  const [newName, setNewName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
-  const [lastEmail, setLastEmail] = useState(currentUser.email);
+  const [newEmail, setNewEmail] = useState(currentUser.email);
   const [isVisible, setIsVisible] = useState(false);
 
   const handleSubmit = (evt) => {
@@ -18,8 +18,8 @@ function Profile({ onLogout }) {
       .updateUserInfo({ name, email })
       .then(() => {
         setIsVisible(false);
-        setLastName(name);
-        setLastEmail(email);
+        setNewName(name);
+        setNewEmail(email);
         console.log('Данные пользователя изменены успешно!');
       })
       .catch((err) => {
@@ -31,7 +31,7 @@ function Profile({ onLogout }) {
     const value = evt.target.value;
     setName(value);
 
-    if (value !== lastName) {
+    if (value !== newName) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
@@ -42,7 +42,7 @@ function Profile({ onLogout }) {
     const value = evt.target.value;
     setEmail(value);
 
-    if (value !== lastEmail) {
+    if (value !== newEmail) {
       setIsVisible(true);
     } else {
       setIsVisible(false);
@@ -65,7 +65,7 @@ function Profile({ onLogout }) {
           </li>
         </ul>
         <div className="profile__form-buttons">
-          <button className="profile__button" type="button" disabled={!isVisible}>
+          <button className="profile__button" type="submit" disabled={!isVisible}>
             Редактировать
           </button>
           <button className="profile__button profile__button_type_highlighted" type="button" onClick={onLogout}>
