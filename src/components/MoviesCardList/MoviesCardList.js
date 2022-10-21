@@ -7,17 +7,19 @@ function MoviesCardList() {
   const getMoviesArr = () => {
     const allFoundMovies = JSON.parse(localStorage.getItem('allFoundMovies'));
     const shortFoundMovies = JSON.parse(localStorage.getItem('shortFoundMovies'));
-    const toggleValue = JSON.parse(localStorage.getItem('isToggle'));
+    const isToggle = JSON.parse(localStorage.getItem('isToggle'));
 
     let moviesArr;
 
-    if (toggleValue) {
+    if (allFoundMovies === null || shortFoundMovies === null) {
+      moviesArr = [];
+    } else if (isToggle) {
       moviesArr = shortFoundMovies;
     } else {
       moviesArr = allFoundMovies;
     };
+    console.log('allFoundMovies, shortFoundMovies:', allFoundMovies, shortFoundMovies);
 
-    console.log('getMoviesArr', moviesArr);
     return moviesArr;
   };
 
@@ -26,6 +28,8 @@ function MoviesCardList() {
   const rebuildMoviesArr = () => {
     const screenWidth = document.documentElement.clientWidth;
     const moviesArr = getMoviesArr();
+
+    console.log('moviesArr:', moviesArr);
 
     let counter;
 
@@ -76,36 +80,6 @@ function MoviesCardList() {
   console.log('newArr', newArr);
   console.log('newArrFirst', newArrFirst);
   console.log('newArrSecond', newArrSecond);
-
-  // renderMovies();
-  // console.log('111', arr, newArr);
-
-  // renderMovies();
-  // console.log('222', arr, newArr);
-
-  // const a = () => {
-  //   newArr.forEach(elm => {
-  //     let [ film ] = elm;
-  //     // console.log('film', typeof film);
-  //     elm.map(film => console.log("aaaaaaaaaaa", film.id));
-  //     // return film;
-  //   })
-  // };
-
-
-  // const b = a();
-  // console.log('b', b);
-
-
-
-  // let moviesArrToRender = [];
-  // console.log('bbb', moviesArrToRender);
-
-  // const renderMovies = () => {
-  //   let chunk = newMoviesArr.splice(0, 1);
-  //   moviesArrToRender.concat(chunk);
-  //   // console.log('ddd', moviesArrToRender);
-  // };
 
   return (
     <section className="cards">

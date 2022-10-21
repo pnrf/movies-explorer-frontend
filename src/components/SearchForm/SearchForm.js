@@ -16,7 +16,7 @@ function SearchForm({ onSearchResults }) {
 
   function handleToggle() {
     setIsToggle(!isToggle);
-    localStorage.setItem('toggleValue', JSON.stringify(!isToggle));
+    localStorage.setItem('isToggle', JSON.stringify(!isToggle));
   };
 
   useEffect(() => {
