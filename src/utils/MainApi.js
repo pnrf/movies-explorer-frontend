@@ -67,7 +67,7 @@ class MainApi {
     }).then(this._checkRes);
   }
 
-  addMovie(movie) {
+  addMovies(movie) {
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: this._headers,
@@ -77,11 +77,11 @@ class MainApi {
         duration: movie.duration,
         year: movie.year ? movie.year : "Год не указан",
         description: movie.description ? movie.description : "Описание не указано",
-        image: `https://api.nomoreparties.co/${movie.image.url}`,
+        image: `https://api.nomoreparties.co${movie.image.url}`,
         trailerLink: movie.trailerLink ? movie.trailerLink : "Трейлер отсутствует",
         nameRU: movie.nameRU ? movie.nameRU : "Название на русском языке не указано",
         nameEN: movie.nameEN ? movie.nameEN : "Назввание на английском языке не указано",
-        thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
+        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
         movieId: movie.id,
         owner: movie.owner
       }),
@@ -89,6 +89,7 @@ class MainApi {
   }
 
   deleteMovies(movieId) {
+    console.log('movieId', movieId);
     return fetch(`${this._baseUrl}/movies/${movieId}`, {
       method: 'DELETE',
       headers: this._headers,

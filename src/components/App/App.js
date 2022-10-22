@@ -11,7 +11,6 @@ import Login from '../Login/Login';
 import Register from '../Register/Register';
 import Footer from '../Footer/Footer';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import Preloader from '../Preloader/Preloader';
 import MainApi from '../../utils/MainApi';
 import Token from '../../utils/jwt';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';

@@ -3,7 +3,7 @@ class Token {
     this.jwt = 'jwt';
   }
 
-  getToken() {
+  checkToken() {
     return localStorage.getItem(this.jwt);
   }
 
