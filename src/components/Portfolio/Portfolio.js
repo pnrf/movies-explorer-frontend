@@ -17,7 +17,7 @@ function Portfolio() {
           </a>
         </li>
         <li className="portfolio__list-item">
-          <a className="portfolio__link" href="https://github.com/pnrf/react-mesto-api-full" target="_blank" rel="noreferrer">
+          <a className="portfolio__link" href="https://pnrf.github.io/mesto/" target="_blank" rel="noreferrer">
             Одностраничное приложение
           </a>
         </li>

@@ -7,7 +7,6 @@ function MoviesCard({ movie, savedMoviesToggle, savedMovies }) {
   const [isSelect, setIsSelect] = useState(false);
 
   const toggleMovieSelector = () => {
-    console.log('isSelect', isSelect);
     const selected = !isSelect;
     const savedMovie = savedMovies.filter(obj => {
       return obj.movieId == movie.id;
@@ -28,8 +27,6 @@ function MoviesCard({ movie, savedMoviesToggle, savedMovies }) {
       const savedMovie = savedMovies.filter((obj) => {
         return obj.movieId == movie.id;
       });
-
-      console.log('savedMovie', savedMovie);
 
       if (savedMovie.length > 0) {
         setIsSelect(true);

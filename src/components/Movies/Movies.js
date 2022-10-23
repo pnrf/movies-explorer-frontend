@@ -106,7 +106,6 @@ function Movies() {
   }
 
   async function savedMoviesToggle(movie, isSelected) {
-    console.log(movie);
     if (isSelected) {
       try {
         await mainApi.addMovies(movie);
@@ -130,7 +129,6 @@ function Movies() {
     mainApi
       .getMovies()
       .then((data) => {
-        console.log('data', data);
         setSavedMovies(data);
       })
       .catch((err) => {

@@ -120,8 +120,20 @@
   line-height: 18px;
 }
 
+@media screen and (min-width: 320px) {
+  .search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 80px 14px 10px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 80px 30px 10px;
   }
 
@@ -141,6 +153,9 @@
 
 @media screen and (min-width: 1280px) {
   .search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 80px 70px 10px;
   }
 
