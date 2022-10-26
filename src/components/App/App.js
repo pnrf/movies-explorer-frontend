@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import { Routes, Route, useLocation, Navigate, redirect } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate, Navigate, redirect } from "react-router-dom";
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -12,6 +12,7 @@ import Register from '../Register/Register';
 import Footer from '../Footer/Footer';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import MainApi from '../../utils/MainApi';
+import MoviesApi from '../../utils/MoviesApi';
 import Token from '../../utils/jwt';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -20,6 +21,43 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsLoading(true);
+      Promise.all([MainApi.getUserInfo(), MainApi.getMovies(), MoviesApi.getAllMovies()])
+        .then(([userInfo, savedMovies, allMovies]) => {
+          setCurrentUser(userInfo);
+          localStorage.setItem('allMovies', JSON.stringify(allMovies))
+          localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+          console.log('сработал useEffect. Получены и добавлены в localstorage фильмы с сервера beatfilm-movies, userInfo и savedMovies:', allMovies, userInfo, savedMovies);
+        })
+        .catch((err) => {
+          console.log(`Не удалось получить данные пользователя, массив всех фильмов и список сохраненных фильмов. Ошибка: ${err}`);
+          alert('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте еще раз');
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      MainApi
+        .checkToken(Token.checkToken())
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+            console.log('Токен проверен. Все в порядке');
+          }
+        })
+        .catch((err) => {
+          console.log("Что-то не так с токеном. Возможно, вы не авторизованы. Ошибка:", err);
+          setIsLoggedIn(false);
+        });
+    };
+  }, [navigate])
+
 
   useEffect(() => {
     getUserInfo();
@@ -50,7 +88,7 @@ function App() {
         }
       })
       .catch(err => {
-        console.log(`Ошибка регистрации: ${err}`);
+        alert(`Ошибка регистрации: ${err}`);
       });
   };
 
@@ -68,13 +106,14 @@ function App() {
         }
       })
       .catch(err => {
-        console.log(`Ошибка авторизации: ${err}`);
+        alert(`Неверный email или пароль. Ошибка авторизации: ${err}`);
       });
   };
 
   const onLogout = () => {
     Token.removeToken();
     setIsLoggedIn(false);
+    setCurrentUser({});
     localStorage.clear();
   };
 

@@ -4,106 +4,146 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import mainApi from '../../utils/MainApi';
+import { SHORT_MOVIE } from '../../utils/constants';
 
-function SavedMovies() {
-  const [moviesSearchResults, setMoviesSearchResults] = useState(null);
+function SavedMovies(isLoggedIn, isLoading) {
+
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedMoviesToRender, setSavedMoviesToRender] = useState([]);
+
+  const [savedMoviesSearchRequest, setSavedMoviesSearchRequest] = useState('');
+  const [savedMoviesSearchResults, setSavedMoviesSearchResults] = useState([]);
+  const [shortSavedMovies, setShortSavedMovies] = useState([]);
+
   const [preloader, setPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [moviesToggle, setMoviesToggle] = useState(false);
-  const [moviesSearchRequest, setMoviesSearchRequest] = useState('');
-  const [moviesToRender, setMoviesToRender] = useState([]);
+  const [isToggle, setIsToggle] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  async function handleGetMovies(searchRequest, isToggle) {
-    setErrorMessage('');
-    setPreloader(true);
+  // -------------- ИЗНАЧАЛЬНОЕ ОТОБРАЖЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ -----------------
 
-    try {
-      const data = moviesSearchResults;
-      let filterData = data.filter((movie) => movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()));
-
-      if (isToggle) {
-        filterData = filterData.filter((movie) => movie.duration <= 40)
-      };
-
-      setMoviesToRender(filterData);
-
-      if (searchRequest) {
-        localStorage.setItem('savedMovies', JSON.stringify(filterData));
-        localStorage.setItem('savedMoviesToggle', isToggle);
-        localStorage.setItem('savedMoviesSearchRequest', searchRequest);
-      } else {
-        localStorage.removeItem('savedMovies');
-        localStorage.removeItem('savedMoviesToggle');
-        localStorage.removeItem('savedMoviesSearchRequest');
-      }
-    } catch (err) {
-      setErrorMessage(
-        'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-      );
-
-      setMoviesSearchResults([]);
-      localStorage.removeItem('savedMovies');
-      localStorage.removeItem('savedMoviesToggle');
-      localStorage.removeItem('savedMoviesSearchRequest');
-    } finally {
-      setPreloader(false);
+  useEffect(() => {
+    const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    if (initialSavedMovies.length === 0) {
+      setErrorMessage('У вас нет сохраненных фильмов. Подберите что-нибудь интересное на странице Фильмы');
+      setIsDisabled(true);
+    } else if (initialSavedMovies.length > 0) {
+      setSavedMovies(initialSavedMovies);
+      setSavedMoviesToRender(initialSavedMovies);
+      setIsDisabled(false);
+    } else {
+      setErrorMessage('При получении массива сохраненных фильмов что-то пошло не так');
     }
-  }
+  }, []);
+
+  // ---------------- ПОИСК И ОТОБРАЖЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ -------------------
+
+  function getSavedMovies(searchRequest, isToggle) {
+    setErrorMessage('');
+
+    if (!searchRequest) {
+      setErrorMessage('Введите поисковый запрос или перезагрузите страницу.');
+      return;
+    }
+
+    if (savedMovies === null) {
+      return setErrorMessage('При получении массива сохраненных фильмов что-то пошло не так')
+    };
+
+    const savedMoviesSearchResults = savedMovies.filter((movie) => movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()));
+    const shortSavedMovies = savedMoviesSearchResults.filter((movie) => {
+      return movie.duration <= SHORT_MOVIE;
+    });
+
+    localStorage.setItem('savedMoviesSearchRequest', searchRequest);
+    localStorage.setItem('savedMoviesSearchResults', JSON.stringify(savedMoviesSearchResults));
+    localStorage.setItem('shortSavedMovies', JSON.stringify(shortSavedMovies));
+
+    setSavedMoviesSearchRequest(searchRequest);
+    setSavedMoviesSearchResults(savedMoviesSearchResults);
+    setShortSavedMovies(shortSavedMovies);
+    setIsToggle(isToggle);
+
+    if (isToggle) {
+      if (shortSavedMovies.length > 0) {
+        setSavedMoviesToRender(shortSavedMovies);
+      } else {
+        setErrorMessage('Среди сохраненных фильмов нет короткометражек, соответствующих вашему запросу');
+      }
+    } else {
+      if (savedMoviesSearchResults.length > 0) {
+        setSavedMoviesToRender(savedMoviesSearchResults);
+      } else {
+        setErrorMessage('Среди сохраненных фильмов нет ни одного фильма, соответствующего вашему запросу');
+      }
+    };
+  };
+
+  function renderShortSavedMovies(isToggle, searchRequest) {
+    setErrorMessage('');
+    setIsToggle(isToggle);
+
+    if (!searchRequest && isToggle) {
+      setSavedMoviesToRender(savedMovies.filter((movie) => {
+        return movie.duration <= SHORT_MOVIE;
+      }));
+    } else if (!searchRequest && !isToggle) {
+      setSavedMoviesToRender(savedMovies);
+    } else if (searchRequest && isToggle) {
+        if (shortSavedMovies.length > 0) {
+          setSavedMoviesToRender(shortSavedMovies);
+        } else {
+          setErrorMessage('Среди сохраненных фильмов нет короткометражек, соответствующих вашему запросу');
+        }
+    } else if (searchRequest && !isToggle) {
+        if (savedMoviesSearchResults.length > 0) {
+          setSavedMoviesToRender(savedMoviesSearchResults);
+        } else {
+          setErrorMessage('Среди сохраненных фильмов нет ни одного фильма, соответствующего вашему запросу');
+        }
+    } else {
+      setErrorMessage('Что-то пошло не так...');
+    }
+  };
+
+    // ------------------------ УДАЛЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ ------------------------
 
   async function savedMoviesToggle(movie, isToggle) {
+    setErrorMessage('');
+
     if (!isToggle) {
       try {
         await mainApi.deleteMovies(movie._id);
-        const newMovies = await mainApi.getMovies();
-        setMoviesToRender(newMovies);
-        setMoviesSearchResults(newMovies);
+        const newSavedMovies = await mainApi.getMovies();
+        setSavedMovies(newSavedMovies);
+        setSavedMoviesToRender(newSavedMovies);
+        setSavedMoviesSearchResults(newSavedMovies);
+        setShortSavedMovies(newSavedMovies.filter((movie) => {
+          return movie.duration <= SHORT_MOVIE;
+        }));
       } catch (err) {
         console.log(`При удалении фильма что-то пошло не так. Ошибка: ${err}`);
       }
     }
   }
 
-  useEffect(() => {
-    async function fetchData() {
-      const localStorageMovies = localStorage.getItem('savedMovies');
-      if (localStorageMovies) {
-        setMoviesSearchResults(JSON.parse(localStorageMovies));
-        const localStorageMoviesToggle = localStorage.getItem('savedMoviesToggle');
-        const localStorageMoviesSearchRequest = localStorage.getItem('savedMoviesSearchRequest');
-
-        if (localStorageMoviesToggle) {
-          setMoviesToggle(localStorageMoviesToggle === 'true');
-        }
-        if (localStorageMoviesSearchRequest) {
-          setMoviesSearchRequest(localStorageMoviesSearchRequest);
-        }
-      } else {
-        try {
-          const data = await mainApi.getMovies();
-          setMoviesSearchResults(data);
-          setMoviesToRender(data);
-        } catch (err) {
-          console.log(`При получении данных из localStorage возникла ошибка: ${err}`);
-        }
-      }
-    };
-    fetchData();
-  }, []);
-
   return (
     <section className="saved-movies">
       <SearchForm
-        onGetMovies={handleGetMovies}
-        moviesToggle={moviesToggle}
-        moviesSearchRequest={moviesSearchRequest}
+        onGetMovies={getSavedMovies}
+        moviesToggle={isToggle}
+        moviesSearchRequest={savedMoviesSearchRequest}
+        renderMovies={renderShortSavedMovies}
+        isDisabled={isDisabled}
       />
       {errorMessage && <div className="saved-movies__error-message">{errorMessage}</div>}
       {preloader && <Preloader />}
-      {!preloader && !errorMessage && moviesSearchResults !== null && (
+      {!preloader && !errorMessage && savedMoviesToRender && (
         <MoviesCardList
+          moviesToRender={savedMoviesToRender}
           moviesRemains={[]}
           savedMoviesToggle={savedMoviesToggle}
-          moviesToRender={moviesToRender}
+          savedMovies={savedMovies}
         />
       )}
     </section>

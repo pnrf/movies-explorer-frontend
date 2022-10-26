@@ -5,6 +5,8 @@ import { useLocation } from 'react-router-dom';
 function MoviesCardList({ moviesToRender, savedMoviesToggle, savedMovies, moviesRemains, renderMore }) {
   const { pathname } = useLocation();
 
+  console.log('MoviesCardList ---- moviesToRender', moviesToRender);
+
   return (
     <section className="cards">
       <ul className="cards__list">

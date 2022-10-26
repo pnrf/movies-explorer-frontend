@@ -20,10 +20,10 @@ function Profile({ onLogout }) {
         setIsVisible(false);
         setNewName(name);
         setNewEmail(email);
-        console.log('Данные пользователя изменены успешно!');
+        alert('Данные пользователя изменены успешно!');
       })
       .catch((err) => {
-        console.log(`Не удалось изменить данные пользователя. Ошибка: ${err}`);
+        alert(`Не удалось изменить данные пользователя. Ошибка: ${err}`);
       });
     };
 
