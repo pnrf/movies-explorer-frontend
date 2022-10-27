@@ -115,6 +115,7 @@ function SavedMovies(isLoggedIn, isLoading) {
       try {
         await mainApi.deleteMovies(movie._id);
         const newSavedMovies = await mainApi.getMovies();
+        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
         setSavedMovies(newSavedMovies);
         setSavedMoviesToRender(newSavedMovies);
         setSavedMoviesSearchResults(newSavedMovies);

@@ -162,6 +162,7 @@ function Movies(isLoggedIn, isLoading) {
         await mainApi.addMovies(movie);
         let newSavedMovies = await mainApi.getMovies();
         setSavedMovies(newSavedMovies);
+        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
       } catch (err) {
         console.log(`При добавлении фильма что-то пошло не так. Ошибка: ${err}`);
       }
@@ -170,6 +171,7 @@ function Movies(isLoggedIn, isLoading) {
         await mainApi.deleteMovies(movie._id);
         let newSavedMovies = await mainApi.getMovies();
         setSavedMovies(newSavedMovies);
+        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
       } catch (err) {
         console.log(`При удалении фильма что-то пошло не так. Ошибка: ${err}`);
       }
