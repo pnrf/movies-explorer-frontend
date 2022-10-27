@@ -55,9 +55,9 @@ function SavedMovies(isLoggedIn, isLoading) {
       return movie.duration <= SHORT_MOVIE;
     });
 
-    localStorage.setItem('savedMoviesSearchRequest', searchRequest);
-    localStorage.setItem('savedMoviesSearchResults', JSON.stringify(savedMoviesSearchResults));
-    localStorage.setItem('shortSavedMovies', JSON.stringify(shortSavedMovies));
+    // localStorage.setItem('savedMoviesSearchRequest', searchRequest);
+    // localStorage.setItem('savedMoviesSearchResults', JSON.stringify(savedMoviesSearchResults));
+    // localStorage.setItem('shortSavedMovies', JSON.stringify(shortSavedMovies));
 
     setSavedMoviesSearchRequest(searchRequest);
     setSavedMoviesSearchResults(savedMoviesSearchResults);

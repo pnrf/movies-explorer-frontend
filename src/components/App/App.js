@@ -31,7 +31,6 @@ function App() {
           setCurrentUser(userInfo);
           localStorage.setItem('allMovies', JSON.stringify(allMovies))
           localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-          console.log('сработал useEffect. Получены и добавлены в localstorage фильмы с сервера beatfilm-movies, userInfo и savedMovies:', allMovies, userInfo, savedMovies);
         })
         .catch((err) => {
           console.log(`Не удалось получить данные пользователя, массив всех фильмов и список сохраненных фильмов. Ошибка: ${err}`);
@@ -48,7 +47,6 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-            console.log('Токен проверен. Все в порядке');
           }
         })
         .catch((err) => {

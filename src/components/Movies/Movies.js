@@ -1,5 +1,6 @@
 import './Movies.css';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -14,6 +15,7 @@ import {
   QUANTITY_CARDS_MOBILE } from '../../utils/constants';
 
 function Movies(isLoggedIn, isLoading) {
+  const navigate = useNavigate();
 
   const [moviesToRender, setMoviesToRender] = useState([]);
 
@@ -34,19 +36,31 @@ function Movies(isLoggedIn, isLoading) {
   const [moviesCounter, setMoviesCounter] = useState([]);
 
 
-  // -------------- ИЗНАЧАЛЬНОЕ ОТОБРАЖЕНИЕ ФИЛЬМОВ -----------------
+  // -------------- СЛЕПОК ЭКРАНА (РЕЗУЛЬТАТОВ ПОИСКА) -----------------
 
-  // useEffect(() => {
-  //   if (!moviesSearchRequest) {
-  //     setMoviesToRender([]);
-  //     setMoviesRemains([]);
-  //   };
-  // }, [moviesSearchRequest]);
+  useEffect(() => {
+    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+    if (savedMovies !== null) {
+    setSavedMovies(savedMovies);
+    };
 
-  // function changeToggle (isToggle) {
-  //   setMoviesToggle(isToggle);
+    const localStorageMoviesToggle = localStorage.getItem('isToggle');
+    const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
+    // const localStorageMoviesSearchResults = JSON.parse(localStorage.getItem('moviesSearchResults'));
 
-  // }
+    // if (localStorageMoviesToggle) {
+    //   setisToggle(localStorageMoviesToggle === 'true');
+    // }
+
+    if (localStorageMoviesSearchRequest && localStorageMoviesToggle) {
+      setMoviesSearchRequest(localStorageMoviesSearchRequest);
+      getMovies(localStorageMoviesSearchRequest, localStorageMoviesToggle);
+    };
+
+    // if (localStorageMoviesSearchResults) {
+    //   setMoviesToRender(localStorageMoviesSearchResults);
+    // };
+  }, [navigate]);
 
     // ---------------- ПОИСК И ОТОБРАЖЕНИЕ ФИЛЬМОВ -------------------
 
@@ -72,6 +86,7 @@ function Movies(isLoggedIn, isLoading) {
     localStorage.setItem('moviesSearchRequest', searchRequest);
     localStorage.setItem('moviesSearchResults', JSON.stringify(moviesSearchResults));
     localStorage.setItem('shortMovies', JSON.stringify(shortMovies));
+    localStorage.setItem('isToggle', isToggle);
 
     setMoviesSearchRequest(searchRequest);
     setMoviesSearchResults(moviesSearchResults);
@@ -177,22 +192,6 @@ function Movies(isLoggedIn, isLoading) {
       }
     }
   }
-
-  useEffect(() => {
-    const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
-    setSavedMovies(savedMovies);
-
-    const localStorageMoviesToggle = localStorage.getItem('moviesToggle');
-    const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
-
-    if (localStorageMoviesToggle) {
-      setMoviesToggle(localStorageMoviesToggle === 'true');
-    }
-
-    if (localStorageMoviesSearchRequest) {
-      setMoviesSearchRequest(localStorageMoviesSearchRequest);
-    }
-  }, []);
 
   return (
     <section className="movies">

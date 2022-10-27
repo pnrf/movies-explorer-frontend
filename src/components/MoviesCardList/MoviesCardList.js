@@ -12,8 +12,6 @@ function MoviesCardList({
 
   const { pathname } = useLocation();
 
-  console.log('MoviesCardList ---- moviesToRender', moviesToRender);
-
   return (
     <section className="cards">
       <ul className="cards__list">

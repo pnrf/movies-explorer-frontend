@@ -68,7 +68,6 @@ class MainApi {
   }
 
   addMovies(movie) {
-    console.log('movie добавлен в сохраненные', movie);
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: this._headers,
@@ -90,7 +89,6 @@ class MainApi {
   }
 
   deleteMovies(movieId) {
-    console.log('фильм удален из сохраненных -- movieId', movieId);
     return fetch(`${this._baseUrl}/movies/${movieId}`, {
       method: 'DELETE',
       headers: this._headers,
@@ -103,8 +101,8 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3001',
-  // baseUrl: 'https://api.pankratov.nomorepartiesxyz.ru',
+  // baseUrl: 'http://localhost:3001',
+  baseUrl: 'https://api.pankratov.nomorepartiesxyz.ru',
   headers: {
     'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
     'Accept': 'application/json',
