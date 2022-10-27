@@ -131,8 +131,8 @@ function SavedMovies(isLoggedIn, isLoading) {
     <section className="saved-movies">
       <SearchForm
         onGetMovies={getSavedMovies}
-        moviesToggle={isToggle}
-        moviesSearchRequest={savedMoviesSearchRequest}
+        // moviesToggle={isToggle}
+        // moviesSearchRequest={savedMoviesSearchRequest}
         renderMovies={renderShortSavedMovies}
         isDisabled={isDisabled}
       />

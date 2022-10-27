@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import moviesApi from '../../utils/MoviesApi';
 import mainApi from '../../utils/MainApi.js';
 import {
   SHORT_MOVIE,
@@ -14,29 +13,29 @@ import {
   QUANTITY_CARDS_TABLET,
   QUANTITY_CARDS_MOBILE } from '../../utils/constants';
 
-function Movies() {
+function Movies(isLoggedIn, isLoading) {
 
-
-
+  const [moviesToRender, setMoviesToRender] = useState([]);
 
   const [moviesSearchRequest, setMoviesSearchRequest] = useState('');
   const [moviesSearchResults, setMoviesSearchResults] = useState([]);
   const [shortMovies, setShortMovies] = useState([]);
-  const [moviesToRender, setMoviesToRender] = useState([]);
+
   const [moviesRemains, setMoviesRemains] = useState([]);
 
   const [savedMovies, setSavedMovies] = useState([]);
 
   const [preloader, setPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isToggle, setIsToggle] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const [moviesToggle, setMoviesToggle] = useState(false);
   const [moviesCounter, setMoviesCounter] = useState([]);
 
-  const [moviesWithToggle, setMoviesWithToggle] = useState([]);
-  const [moviesToRenderWithToggle, setMoviesToRenderWithToggle] = useState([]);
 
+  // -------------- ИЗНАЧАЛЬНОЕ ОТОБРАЖЕНИЕ ФИЛЬМОВ -----------------
 
-  // ------------------------ НОВЫЙ КОД ------------------------
   // useEffect(() => {
   //   if (!moviesSearchRequest) {
   //     setMoviesToRender([]);
@@ -49,15 +48,23 @@ function Movies() {
 
   // }
 
+    // ---------------- ПОИСК И ОТОБРАЖЕНИЕ ФИЛЬМОВ -------------------
+
   function getMovies(searchRequest, isToggle) {
+    setErrorMessage('');
 
     if (!searchRequest) {
       setErrorMessage('Введите поисковый запрос');
       return;
     }
 
-    const allMovies = JSON.parse(localStorage.getItem("allMovies"));
-    const moviesSearchResults = allMovies.filter((movie) => movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()));
+    const initialMovies = JSON.parse(localStorage.getItem("allMovies"));
+
+    if (initialMovies === null) {
+      return setErrorMessage('При получении массива фильмов что-то пошло не так')
+    };
+
+    const moviesSearchResults = initialMovies.filter((movie) => movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()));
     const shortMovies = moviesSearchResults.filter((movie) => {
       return movie.duration <= SHORT_MOVIE;
     });
@@ -69,25 +76,54 @@ function Movies() {
     setMoviesSearchRequest(searchRequest);
     setMoviesSearchResults(moviesSearchResults);
     setShortMovies(shortMovies);
+    setIsToggle(isToggle);
 
-    console.log('По поисковому запросу отфильтрованы фильмы, в т.ч. короткометражки. Добавлены в localStorage и в useState', searchRequest, moviesSearchResults, shortMovies);
-
-    renderMovies(isToggle);
-  }
-
-  function renderMovies(isToggle) {
-    if (moviesSearchResults) {
-      if (isToggle) {
+    if (isToggle) {
+      if (shortMovies.length > 0) {
         setMoviesToRender(shortMovies);
       } else {
-        let chunk = moviesSearchResults.splice(0, moviesCounter[0]);
+        setErrorMessage('Среди фильмов нет короткометражек, соответствующих вашему запросу.');
+      }
+    } else {
+      if (moviesSearchResults.length > 0) {
+        const newMoviesSearchResults = moviesSearchResults;
+        const chunk = newMoviesSearchResults.slice(0, moviesCounter[0]);
         setMoviesToRender(chunk);
-        setMoviesRemains(moviesSearchResults);
-      };
+        setMoviesRemains(newMoviesSearchResults.slice(moviesCounter[0]));
+      } else {
+        setErrorMessage('Среди фильмов нет ни одного фильма, соответствующего вашему запросу.');
+      }
     };
   };
 
-  // ------------------------ КНОПКА ЕЩЕ ------------------------
+  function renderMovies(isToggle, searchRequest) {
+    setErrorMessage('');
+    setIsToggle(isToggle);
+
+    if (!searchRequest && isToggle) {
+      setErrorMessage('Подсказка: по вашему запросу в результатах поиска отобразятся только короткометражки');
+    } else if (!searchRequest && !isToggle) {
+      setErrorMessage('Подсказка: по вашему запросу в результатаех поиска отобразятся все фильмы, имеющиеся в нашей базе данных');
+    } else if (searchRequest && isToggle) {
+        if (shortMovies.length > 0) {
+          setMoviesToRender(shortMovies);
+        } else {
+          setErrorMessage('Среди фильмов нет короткометражек, соответствующих вашему запросу');
+        }
+    } else if (searchRequest && !isToggle) {
+        if (moviesSearchResults.length > 0) {
+          const copiedChunk = moviesSearchResults.slice(0, moviesCounter[0]);
+          setMoviesToRender(copiedChunk);
+          setMoviesRemains(moviesSearchResults.slice(moviesCounter[0]));
+        } else {
+          setErrorMessage('Среди фильмов нет ни одного фильма, соответствующего вашему запросу');
+        }
+    } else {
+      setErrorMessage('Что-то пошло не так...');
+    }
+  };
+
+  // -------------------------- КНОПКА ЕЩЕ ------------------------
   function renderMore() {
     if (moviesRemains) {
       let newMoviesRemains = moviesRemains;
@@ -97,87 +133,10 @@ function Movies() {
     }
   }
 
-
-
-
-  // function renderMore() {
-  //   const newMoviesSearchResults = moviesSearchResults;
-  //   const newMoviesToRender = moviesToRender.concat(newMoviesSearchResults.splice(0, moviesCounter[1]));
-  //   setMoviesToRender(newMoviesToRender);
-  //   setMoviesSearchResults(newMoviesSearchResults);
-  // }
-
-
-
-  // ------------------------ СТАРЫЙ КОД ------------------------
-
-  // async function getMovies(searchRequest) {
-  //   setMoviesToggle(false);
-  //   localStorage.setItem('moviesToggle', false);
-
-  //   if (!searchRequest) {
-  //     setErrorMessage('Введите поисковый запрос');
-  //     return false;
-  //   }
-
-  //   setErrorMessage('');
-  //   setPreloader(true);
-
-  //   try {
-  //     // const data = await moviesApi.getAllMovies();
-  //     const data = JSON.parse(localStorage.getItem("allMovies"));
-  //     let filterData = data.filter((movie) => movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()));
-
-  //     localStorage.setItem('moviesSearchResults', JSON.stringify(filterData));
-  //     localStorage.setItem('moviesSearchRequest', searchRequest);
-
-  //     const spliceData = filterData.splice(0, moviesCounter[0]);
-
-  //     setMoviesToRender(spliceData);
-  //     setMoviesToRenderWithToggle(spliceData);
-
-  //     setMoviesSearchResults(filterData);
-  //     setMoviesWithToggle(filterData);
-  //   } catch (err) {
-  //     setErrorMessage(
-  //       'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-  //     );
-
-  //     setMoviesSearchResults([]);
-  //     localStorage.removeItem('moviesSearchRequest');
-  //     localStorage.removeItem('moviesSearchResults');
-  //     localStorage.removeItem('moviesToggle');
-  //   } finally {
-  //     setPreloader(false);
-  //   }
-  // }
-
-  // async function getShortMovies(isToggle) {
-  //   let filterDataShowed = [];
-  //   let filterData = [];
-
-  //   if (isToggle) {
-  //     setMoviesToRenderWithToggle(moviesToRender);
-  //     setMoviesWithToggle(moviesSearchResults);
-  //     filterDataShowed = moviesToRender.filter((movie) => movie.duration <= SHORT_MOVIE);
-  //     filterData = moviesSearchResults.filter((movie) => movie.duration <= SHORT_MOVIE);
-  //   } else {
-  //     filterDataShowed = moviesToRenderWithToggle;
-  //     filterData = moviesWithToggle;
-  //   }
-
-  //   localStorage.setItem('moviesSearchResults', JSON.stringify(filterDataShowed.concat(filterData)));
-  //   localStorage.setItem('moviesToggle', isToggle);
-  //   setMoviesToRender(filterDataShowed);
-  //   setMoviesSearchResults(filterData);
-  // }
-
-
   // ------------------------ ШИРИНА ЭКРАНА ------------------------
 
   useEffect(() => {
     getMoviesCounter();
-    console.log('сработал useEffect для получения счетчика');
   }, []);
 
   function getMoviesCounter() {
@@ -193,11 +152,9 @@ function Movies() {
     };
 
     setMoviesCounter(counter);
-    return counter;
   }
 
-
-  // ------------------------ СОХРАНЕННЫЕ ФИЛЬМЫ ------------------------
+  // -------------- ДОБАВЛЕНИЕ и УДАЛЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ ------------------------
 
   async function savedMoviesToggle(movie, isSelected) {
     if (isSelected) {
@@ -220,26 +177,8 @@ function Movies() {
   }
 
   useEffect(() => {
-    // mainApi
-    //   .getMovies()
-    //   .then((data) => {
-    //     setSavedMovies(data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(`Ошибка сервера при получении массива сохраненных фильмов: ${err}`);
-    //   });
-
     const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     setSavedMovies(savedMovies);
-
-    // const localStorageMovies = localStorage.getItem('moviesSearchResults');
-
-    // if (localStorageMovies) {
-    //   const filterData = JSON.parse(localStorageMovies);
-    //   setMoviesToRender(filterData.splice(0, moviesCounter[0]));
-    //   setMoviesSearchResults(filterData);
-    //   setPreloader(false);
-    // }
 
     const localStorageMoviesToggle = localStorage.getItem('moviesToggle');
     const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
@@ -260,18 +199,18 @@ function Movies() {
         moviesToggle={moviesToggle}
         moviesSearchRequest={moviesSearchRequest}
         renderMovies={renderMovies}
-        // onGetShortMovies={getShortMovies}
+        isDisabled={isDisabled}
       />
       {errorMessage && <span className="movies__error-message">{errorMessage}</span>}
       {preloader && <Preloader />}
-      {/* {!preloader && !errorMessage && moviesSearchResults !== null && savedMovies !== null && moviesToRender !== null && ( */}
-      {moviesToRender && moviesRemains && moviesSearchRequest && (
+      {!preloader && !errorMessage && moviesToRender !== null && moviesToRender.length > 0 && (
         <MoviesCardList
           moviesToRender={moviesToRender}
           moviesRemains={moviesRemains}
           savedMoviesToggle={savedMoviesToggle}
           savedMovies={savedMovies}
           renderMore={renderMore}
+          isToggle={isToggle}
         />
       )}
     </section>

@@ -1,7 +1,13 @@
 import './SearchForm.css';
 import React, { useEffect, useState } from 'react';
 
-function SearchForm({ onGetMovies, moviesToggle, moviesSearchRequest, renderMovies, isDisabled }) {
+function SearchForm({
+  onGetMovies,
+  moviesToggle,
+  moviesSearchRequest,
+  renderMovies,
+  isDisabled }) {
+
   const [searchRequest, setSearchRequest] = useState('');
   const [isToggle, setIsToggle] = useState(false);
 
@@ -34,7 +40,7 @@ function SearchForm({ onGetMovies, moviesToggle, moviesSearchRequest, renderMovi
       </label>
       <div className="search__filter">
         <label className="search__toggle">
-          <input className="search__checkbox" name="checkbox" type="checkbox" value={isToggle} checked={isToggle} onChange={handleToggle} disabled={isDisabled}/>
+          <input className="search__checkbox" name="checkbox" type="checkbox" checked={isToggle === true} onChange={handleToggle} disabled={isDisabled}/>
           <span className="search__slider" />
         </label>
         <p className="search__toggle-label">Короткометражки</p>

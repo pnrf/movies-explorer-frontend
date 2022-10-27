@@ -2,7 +2,14 @@ import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
 
-function MoviesCardList({ moviesToRender, savedMoviesToggle, savedMovies, moviesRemains, renderMore }) {
+function MoviesCardList({
+  moviesToRender,
+  moviesRemains,
+  savedMoviesToggle,
+  savedMovies,
+  renderMore,
+  isToggle }) {
+
   const { pathname } = useLocation();
 
   console.log('MoviesCardList ---- moviesToRender', moviesToRender);
@@ -16,7 +23,7 @@ function MoviesCardList({ moviesToRender, savedMoviesToggle, savedMovies, movies
         }
       </ul>
 
-     {moviesRemains.length > 0 && pathname !== '/saved-movies'
+     {moviesRemains.length > 0 && isToggle === false && pathname !== '/saved-movies'
         && (<button className="cards__button" type="button" name="more" onClick={renderMore}>Ещё</button>)
       }
     </section>
