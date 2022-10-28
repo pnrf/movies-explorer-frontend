@@ -17,7 +17,7 @@ function SavedMovies(isLoggedIn, isLoading) {
 
   const [preloader, setPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isToggle, setIsToggle] = useState(false);
+  // const [isToggle, setIsToggle] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
   // -------------- ИЗНАЧАЛЬНОЕ ОТОБРАЖЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ -----------------
@@ -55,14 +55,10 @@ function SavedMovies(isLoggedIn, isLoading) {
       return movie.duration <= SHORT_MOVIE;
     });
 
-    // localStorage.setItem('savedMoviesSearchRequest', searchRequest);
-    // localStorage.setItem('savedMoviesSearchResults', JSON.stringify(savedMoviesSearchResults));
-    // localStorage.setItem('shortSavedMovies', JSON.stringify(shortSavedMovies));
-
     setSavedMoviesSearchRequest(searchRequest);
     setSavedMoviesSearchResults(savedMoviesSearchResults);
     setShortSavedMovies(shortSavedMovies);
-    setIsToggle(isToggle);
+    // setIsToggle(isToggle);
 
     if (isToggle) {
       if (shortSavedMovies.length > 0) {
@@ -81,7 +77,7 @@ function SavedMovies(isLoggedIn, isLoading) {
 
   function renderShortSavedMovies(isToggle, searchRequest) {
     setErrorMessage('');
-    setIsToggle(isToggle);
+    // setIsToggle(isToggle);
 
     if (!searchRequest && isToggle) {
       setSavedMoviesToRender(savedMovies.filter((movie) => {
@@ -132,8 +128,6 @@ function SavedMovies(isLoggedIn, isLoading) {
     <section className="saved-movies">
       <SearchForm
         onGetMovies={getSavedMovies}
-        // moviesToggle={isToggle}
-        // moviesSearchRequest={savedMoviesSearchRequest}
         renderMovies={renderShortSavedMovies}
         isDisabled={isDisabled}
       />

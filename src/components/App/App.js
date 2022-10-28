@@ -15,6 +15,7 @@ import MainApi from '../../utils/MainApi';
 import MoviesApi from '../../utils/MoviesApi';
 import Token from '../../utils/jwt';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { BAD_REQUEST_ERROR, CONFLICT_ERROR } from '../../utils/constants';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,25 +42,21 @@ function App() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    // if (isLoggedIn) {
       MainApi
         .checkToken(Token.checkToken())
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
+            console.log('Токен проверен. Все в порядке');
           }
         })
         .catch((err) => {
-          console.log("Что-то не так с токеном. Возможно, вы не авторизованы. Ошибка:", err);
+          console.log("Что-то не так с токеном. Убедитесь, что вы не авторизованы. Ошибка:", err);
           setIsLoggedIn(false);
         });
-    };
-  }, [navigate])
-
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
+    // };
+  }, [navigate, Window.history]);
 
   const getUserInfo = () => {
     MainApi
@@ -86,7 +83,11 @@ function App() {
         }
       })
       .catch(err => {
-        alert(`Ошибка регистрации: ${err}`);
+        if (CONFLICT_ERROR) {
+          alert('Пользователь с таким email уже зарегистрирован');
+        } else {
+          alert(`Ошибка регистрации: ${err}`);
+        }
       });
   };
 
@@ -104,7 +105,11 @@ function App() {
         }
       })
       .catch(err => {
-        alert(`Неверный email или пароль. Ошибка авторизации: ${err}`);
+        if (BAD_REQUEST_ERROR) {
+          alert('Указан неверный email или пароль.');
+        } else {
+          alert(`Ошибка авторизации: ${err}`);
+        }
       });
   };
 

@@ -32,7 +32,7 @@ function Movies(isLoggedIn, isLoading) {
   const [isToggle, setIsToggle] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const [moviesToggle, setMoviesToggle] = useState(false);
+  // const [moviesToggle, setMoviesToggle] = useState(false);
   const [moviesCounter, setMoviesCounter] = useState([]);
 
 
@@ -41,26 +41,25 @@ function Movies(isLoggedIn, isLoading) {
   useEffect(() => {
     const savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     if (savedMovies !== null) {
-    setSavedMovies(savedMovies);
+      setSavedMovies(savedMovies);
     };
 
-    const localStorageMoviesToggle = localStorage.getItem('isToggle');
     const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
-    // const localStorageMoviesSearchResults = JSON.parse(localStorage.getItem('moviesSearchResults'));
 
-    // if (localStorageMoviesToggle) {
-    //   setisToggle(localStorageMoviesToggle === 'true');
-    // }
+    let localStorageMoviesToggle;
+    if (localStorage.getItem('isToggle') === 'true') {
+      localStorageMoviesToggle = true;
+    } else if (localStorage.getItem('isToggle') === 'false') {
+      localStorageMoviesToggle = false;
+    } else {
+      console.log('При восстановлении результатов поиска после перезагрузки страницы что-то пошло не так');
+    };
 
-    if (localStorageMoviesSearchRequest && localStorageMoviesToggle) {
+    if (localStorageMoviesSearchRequest) {
       setMoviesSearchRequest(localStorageMoviesSearchRequest);
       getMovies(localStorageMoviesSearchRequest, localStorageMoviesToggle);
     };
-
-    // if (localStorageMoviesSearchResults) {
-    //   setMoviesToRender(localStorageMoviesSearchResults);
-    // };
-  }, [navigate]);
+  }, []);
 
     // ---------------- ПОИСК И ОТОБРАЖЕНИЕ ФИЛЬМОВ -------------------
 
@@ -118,7 +117,7 @@ function Movies(isLoggedIn, isLoading) {
     if (!searchRequest && isToggle) {
       setErrorMessage('Подсказка: по вашему запросу в результатах поиска отобразятся только короткометражки');
     } else if (!searchRequest && !isToggle) {
-      setErrorMessage('Подсказка: по вашему запросу в результатаех поиска отобразятся все фильмы, имеющиеся в нашей базе данных');
+      setErrorMessage('Подсказка: по вашему запросу в результатах поиска отобразятся все фильмы, имеющиеся в нашей базе данных');
     } else if (searchRequest && isToggle) {
         if (shortMovies.length > 0) {
           setMoviesToRender(shortMovies);
@@ -197,7 +196,7 @@ function Movies(isLoggedIn, isLoading) {
     <section className="movies">
       <SearchForm
         onGetMovies={getMovies}
-        moviesToggle={moviesToggle}
+        // moviesToggle={moviesToggle}
         moviesSearchRequest={moviesSearchRequest}
         renderMovies={renderMovies}
         isDisabled={isDisabled}

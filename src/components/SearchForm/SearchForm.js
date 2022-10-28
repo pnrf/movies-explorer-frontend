@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 
 function SearchForm({
   onGetMovies,
-  moviesToggle,
-  moviesSearchRequest,
   renderMovies,
   isDisabled }) {
 
@@ -15,8 +13,15 @@ function SearchForm({
     const localStorageMoviesToggle = localStorage.getItem('isToggle');
     const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
 
-    setIsToggle(localStorageMoviesToggle);
     setSearchRequest(localStorageMoviesSearchRequest);
+
+    if (localStorageMoviesToggle && localStorageMoviesSearchRequest) {
+      if (localStorageMoviesToggle === 'true') {
+        setIsToggle(true);
+      } else {
+        setIsToggle(false);
+      };
+    };
   }, [])
 
   function handleSearchRequest(evt) {
@@ -25,8 +30,9 @@ function SearchForm({
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    setIsToggle(isToggle);
     onGetMovies(searchRequest, isToggle);
-    setIsToggle(evt.target.checkbox.value);
+    // setIsToggle(evt.target.checkbox.value);
   }
 
   function handleToggle() {
@@ -45,7 +51,7 @@ function SearchForm({
       </label>
       <div className="search__filter">
         <label className="search__toggle">
-          <input className="search__checkbox" name="checkbox" type="checkbox" value={isToggle} checked={isToggle} onChange={handleToggle} disabled={isDisabled}/>
+          <input className="search__checkbox" name="checkbox" type="checkbox" checked={isToggle} onChange={handleToggle} disabled={isDisabled}/>
           <span className="search__slider" />
         </label>
         <p className="search__toggle-label">Короткометражки</p>
