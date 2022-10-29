@@ -19,7 +19,7 @@ function NavBar() {
           <ul className="navbar__menu-list">
             <li className="navbar__menu-list-item">
               <NavLink
-                className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_type_light'}`}
+                className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_type_light'} ${pathname === "/movies" && 'navbar__menu-link_active'}`}
                 activeclassname="navbar__menu-link_active"
                 onClick={handleMenuClosing}
                 to="/movies">Фильмы
@@ -27,7 +27,7 @@ function NavBar() {
             </li>
             <li className="navbar__menu-list-item">
               <NavLink
-                className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_type_light'}`}
+                className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_type_light'} ${pathname === "/saved-movies" && 'navbar__menu-link_active'}`}
                 activeclassname="navbar__menu-link_active"
                 onClick={handleMenuClosing}
                 to="/saved-movies">Сохранённые фильмы
@@ -36,7 +36,7 @@ function NavBar() {
           </ul>
           <div className="navbar__menu-account">
             <NavLink
-              className={`navbar__menu-account-link ${pathname === "/" && 'navbar__menu-account-link_type_light'}`}
+              className={`navbar__menu-account-link ${pathname === "/" && 'navbar__menu-account-link_type_light'} ${pathname === "/profile" && 'navbar__menu-link_active'}`}
               activeclassname="navbar__menu-account-link_active"
               onClick={handleMenuClosing}
               to="/profile">Аккаунт
@@ -52,7 +52,7 @@ function NavBar() {
             <ul className="navbar__menu-list">
               <li className="navbar__menu-list-item">
                 <NavLink
-                  className="navbar__menu-link"
+                  className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_active'}`}
                   activeclassname="navbar__menu-link_active"
                   onClick={handleMenuClosing}
                   to="/">Главная
@@ -60,7 +60,7 @@ function NavBar() {
               </li>
               <li className="navbar__menu-list-item">
                 <NavLink
-                  className="navbar__menu-link"
+                  className={`navbar__menu-link ${pathname === "/movies" && 'navbar__menu-link_active'}`}
                   activeclassname="navbar__menu-link_active"
                   onClick={handleMenuClosing}
                   to="/movies">Фильмы
@@ -68,7 +68,7 @@ function NavBar() {
               </li>
               <li className="navbar__menu-list-item">
                 <NavLink
-                  className="navbar__menu-link"
+                  className={`navbar__menu-link ${pathname === "/saved-movies" && 'navbar__menu-link_active'}`}
                   activeclassname="navbar__menu-link_active"
                   onClick={handleMenuClosing}
                   to="/saved-movies">Сохранённые фильмы

@@ -3,24 +3,28 @@ import React, { useEffect, useState } from 'react';
 
 function SearchForm({
   onGetMovies,
-  renderMovies,
   isDisabled }) {
 
   const [searchRequest, setSearchRequest] = useState('');
   const [isToggle, setIsToggle] = useState(false);
 
   useEffect(() => {
+    setSearchRequest('');
+    setIsToggle(false);
+
     const localStorageMoviesToggle = localStorage.getItem('isToggle');
     const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
 
-    setSearchRequest(localStorageMoviesSearchRequest);
-
     if (localStorageMoviesToggle && localStorageMoviesSearchRequest) {
+      setSearchRequest(localStorageMoviesSearchRequest);
+
       if (localStorageMoviesToggle === 'true') {
         setIsToggle(true);
       } else {
         setIsToggle(false);
       };
+
+      // onGetMovies(localStorageMoviesSearchRequest, localStorageMoviesToggle);
     };
   }, [])
 
@@ -38,8 +42,13 @@ function SearchForm({
   function handleToggle() {
     const isToggleValue = !isToggle;
     setIsToggle(isToggleValue);
-    renderMovies(isToggleValue, searchRequest);
+    // onGetMovies(searchRequest, isToggleValue);
+    // renderMovies(isToggleValue, searchRequest);
   };
+
+  useEffect(() => {
+    onGetMovies(searchRequest, isToggle);
+  }, [isToggle]);
 
   return (
     <form className="search" onSubmit={handleSubmit} noValidate>

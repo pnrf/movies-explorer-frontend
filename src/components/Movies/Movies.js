@@ -52,7 +52,7 @@ function Movies(isLoggedIn, isLoading) {
     } else if (localStorage.getItem('isToggle') === 'false') {
       localStorageMoviesToggle = false;
     } else {
-      console.log('При восстановлении результатов поиска после перезагрузки страницы что-то пошло не так');
+      console.log('Сохраненных в localStorage результатов поиска нет. Пользователь еще ничего не искал');
     };
 
     if (localStorageMoviesSearchRequest) {
@@ -197,7 +197,7 @@ function Movies(isLoggedIn, isLoading) {
       <SearchForm
         onGetMovies={getMovies}
         // moviesToggle={moviesToggle}
-        moviesSearchRequest={moviesSearchRequest}
+        // moviesSearchRequest={moviesSearchRequest}
         renderMovies={renderMovies}
         isDisabled={isDisabled}
       />

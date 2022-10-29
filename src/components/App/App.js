@@ -52,11 +52,11 @@ function App() {
           }
         })
         .catch((err) => {
-          console.log("Что-то не так с токеном. Убедитесь, что вы не авторизованы. Ошибка:", err);
+          console.log("Что-то не так с токеном. Убедитесь, что вы авторизованы. Ошибка:", err);
           setIsLoggedIn(false);
         });
     // };
-  }, [navigate, Window.history]);
+  }, [navigate]);
 
   const getUserInfo = () => {
     MainApi

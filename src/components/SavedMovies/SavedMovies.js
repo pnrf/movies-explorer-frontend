@@ -23,6 +23,8 @@ function SavedMovies(isLoggedIn, isLoading) {
   // -------------- ИЗНАЧАЛЬНОЕ ОТОБРАЖЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ -----------------
 
   useEffect(() => {
+    setSavedMoviesSearchRequest('');
+
     const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     if (initialSavedMovies.length === 0) {
       setErrorMessage('У вас нет сохраненных фильмов. Подберите что-нибудь интересное на странице Фильмы');
@@ -128,7 +130,6 @@ function SavedMovies(isLoggedIn, isLoading) {
     <section className="saved-movies">
       <SearchForm
         onGetMovies={getSavedMovies}
-        renderMovies={renderShortSavedMovies}
         isDisabled={isDisabled}
       />
       {errorMessage && <div className="saved-movies__error-message">{errorMessage}</div>}
