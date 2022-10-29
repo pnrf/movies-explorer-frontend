@@ -1,11 +1,14 @@
 import './SearchForm.css';
 import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 
 function SearchForm({
   onGetMovies,
   isDisabled }) {
+  const { pathname } = useLocation();
 
   const [searchRequest, setSearchRequest] = useState('');
+  const [searchRequestSavedMovies, setSearchRequestSavedMovies ] = useState('');
   const [isToggle, setIsToggle] = useState(false);
 
   useEffect(() => {
@@ -29,14 +32,25 @@ function SearchForm({
   }, [])
 
   function handleSearchRequest(evt) {
-    setSearchRequest(evt.target.value);
+    // setSearchRequest(evt.target.value);
+    if (pathname === '/saved-movies') {
+      // onGetMovies(searchRequestSavedMovies, isToggle);
+      setSearchRequestSavedMovies(evt.target.value);
+    } else {
+      setSearchRequest(evt.target.value);
+    };
   }
 
   function handleSubmit(evt) {
     evt.preventDefault();
     setIsToggle(isToggle);
-    onGetMovies(searchRequest, isToggle);
+    // onGetMovies(searchRequest, isToggle);
     // setIsToggle(evt.target.checkbox.value);
+    if (pathname === '/saved-movies') {
+      onGetMovies(searchRequestSavedMovies, isToggle);
+    } else {
+      onGetMovies(searchRequest, isToggle);
+    };
   }
 
   function handleToggle() {
@@ -47,13 +61,17 @@ function SearchForm({
   };
 
   useEffect(() => {
-    onGetMovies(searchRequest, isToggle);
+    if (pathname === '/saved-movies') {
+      onGetMovies(searchRequestSavedMovies, isToggle);
+    } else if (pathname === '/movies' && searchRequest.length > 0){
+      onGetMovies(searchRequest, isToggle);
+    };
   }, [isToggle]);
 
   return (
     <form className="search" onSubmit={handleSubmit} noValidate>
       <label className="search__container">
-        <input className="search__input" placeholder="Фильм" name="search" type="text" value={searchRequest || ''} onChange={handleSearchRequest} disabled={isDisabled} required />
+        <input className="search__input" placeholder="Фильм" name="search" type="text" value={pathname === '/saved-movies' ? searchRequestSavedMovies : searchRequest || ''} onChange={handleSearchRequest} disabled={isDisabled} required />
         <button className="search__button" type="submit" disabled={isDisabled}>
           <div className="search__button-bgr" />
         </button>

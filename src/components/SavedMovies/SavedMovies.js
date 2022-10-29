@@ -44,7 +44,32 @@ function SavedMovies(isLoggedIn, isLoading) {
     setErrorMessage('');
 
     if (!searchRequest) {
-      setErrorMessage('Введите поисковый запрос или перезагрузите страницу.');
+      console.log('searchRequest', searchRequest);
+
+      setSavedMoviesSearchRequest('');
+
+      const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"));
+      if (initialSavedMovies.length === 0) {
+        setErrorMessage('У вас нет сохраненных фильмов. Подберите что-нибудь интересное на странице Фильмы');
+        setIsDisabled(true);
+      } else if (initialSavedMovies.length > 0) {
+        setSavedMovies(initialSavedMovies);
+        // setSavedMoviesToRender(initialSavedMovies);
+        setIsDisabled(false);
+
+        if (isToggle) {
+          setSavedMoviesToRender(initialSavedMovies.filter((movie) => {
+            return movie.duration <= SHORT_MOVIE;
+          }));
+        } else {
+          setSavedMoviesToRender(initialSavedMovies);
+        };
+
+      } else {
+        setErrorMessage('При получении массива сохраненных фильмов что-то пошло не так');
+      }
+
+      // setErrorMessage('Введите поисковый запрос или перезагрузите страницу!');
       return;
     }
 
