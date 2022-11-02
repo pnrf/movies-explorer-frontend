@@ -42,20 +42,18 @@ function App() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    // if (isLoggedIn) {
-      MainApi
-        .checkToken(Token.checkToken())
-        .then((res) => {
-          if (res) {
-            setIsLoggedIn(true);
-            console.log('Токен проверен. Все в порядке');
-          }
-        })
-        .catch((err) => {
-          console.log("Что-то не так с токеном. Убедитесь, что вы авторизованы. Ошибка:", err);
-          setIsLoggedIn(false);
-        });
-    // };
+    MainApi
+      .checkToken(Token.checkToken())
+      .then((res) => {
+        if (res) {
+          setIsLoggedIn(true);
+          console.log('Токен проверен. Все в порядке');
+        }
+      })
+      .catch((err) => {
+        console.log("Что-то не так с токеном. Убедитесь, что вы авторизованы. Ошибка:", err);
+        onLogout();
+      });
   }, [navigate]);
 
   const getUserInfo = () => {

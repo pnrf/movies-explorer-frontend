@@ -1,30 +1,15 @@
 import './Movies.css';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import mainApi from '../../utils/MainApi.js';
-import {
-  SHORT_MOVIE,
-  WIDTH_SCREEN_DESKTOP,
-  WIDTH_SCREEN_TABLET,
-  WIDTH_SCREEN_MOBILE,
-  QUANTITY_CARDS_DESKTOP,
-  QUANTITY_CARDS_TABLET,
-  QUANTITY_CARDS_MOBILE } from '../../utils/constants';
+import { SHORT_MOVIE, MOVIES_COUNTER_OBJ } from '../../utils/constants';
 
 function Movies(isLoggedIn, isLoading) {
-  const navigate = useNavigate();
 
   const [moviesToRender, setMoviesToRender] = useState([]);
-
-  const [moviesSearchRequest, setMoviesSearchRequest] = useState('');
-  const [moviesSearchResults, setMoviesSearchResults] = useState([]);
-  const [shortMovies, setShortMovies] = useState([]);
-
   const [moviesRemains, setMoviesRemains] = useState([]);
-
   const [savedMovies, setSavedMovies] = useState([]);
 
   const [preloader, setPreloader] = useState(false);
@@ -32,9 +17,7 @@ function Movies(isLoggedIn, isLoading) {
   const [isToggle, setIsToggle] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  // const [moviesToggle, setMoviesToggle] = useState(false);
   const [moviesCounter, setMoviesCounter] = useState([]);
-
 
   // -------------- СЛЕПОК ЭКРАНА (РЕЗУЛЬТАТОВ ПОИСКА) -----------------
 
@@ -56,7 +39,6 @@ function Movies(isLoggedIn, isLoading) {
     };
 
     if (localStorageMoviesSearchRequest) {
-      setMoviesSearchRequest(localStorageMoviesSearchRequest);
       getMovies(localStorageMoviesSearchRequest, localStorageMoviesToggle);
     };
   }, []);
@@ -87,9 +69,6 @@ function Movies(isLoggedIn, isLoading) {
     localStorage.setItem('shortMovies', JSON.stringify(shortMovies));
     localStorage.setItem('isToggle', isToggle);
 
-    setMoviesSearchRequest(searchRequest);
-    setMoviesSearchResults(moviesSearchResults);
-    setShortMovies(shortMovies);
     setIsToggle(isToggle);
 
     if (isToggle) {
@@ -110,33 +89,6 @@ function Movies(isLoggedIn, isLoading) {
     };
   };
 
-  function renderMovies(isToggle, searchRequest) {
-    setErrorMessage('');
-    setIsToggle(isToggle);
-
-    if (!searchRequest && isToggle) {
-      setErrorMessage('Подсказка: по вашему запросу в результатах поиска отобразятся только короткометражки');
-    } else if (!searchRequest && !isToggle) {
-      setErrorMessage('Подсказка: по вашему запросу в результатах поиска отобразятся все фильмы, имеющиеся в нашей базе данных');
-    } else if (searchRequest && isToggle) {
-        if (shortMovies.length > 0) {
-          setMoviesToRender(shortMovies);
-        } else {
-          setErrorMessage('Среди фильмов нет короткометражек, соответствующих вашему запросу');
-        }
-    } else if (searchRequest && !isToggle) {
-        if (moviesSearchResults.length > 0) {
-          const copiedChunk = moviesSearchResults.slice(0, moviesCounter[0]);
-          setMoviesToRender(copiedChunk);
-          setMoviesRemains(moviesSearchResults.slice(moviesCounter[0]));
-        } else {
-          setErrorMessage('Среди фильмов нет ни одного фильма, соответствующего вашему запросу');
-        }
-    } else {
-      setErrorMessage('Что-то пошло не так...');
-    }
-  };
-
   // -------------------------- КНОПКА ЕЩЕ ------------------------
   function renderMore() {
     if (moviesRemains) {
@@ -150,22 +102,28 @@ function Movies(isLoggedIn, isLoading) {
   // ------------------------ ШИРИНА ЭКРАНА ------------------------
 
   useEffect(() => {
-    getMoviesCounter();
+    setMoviesCounter(getMoviesCounter());
+    const handlerResize = () => setMoviesCounter(getMoviesCounter());
+    window.addEventListener('resize', handlerResize);
+
+    return () => {
+      window.removeEventListener('resize', handlerResize);
+    };
   }, []);
 
   function getMoviesCounter() {
-    const screenWidth = document.documentElement.clientWidth;
-    let counter;
+    let countCards;
+    const clientWidth = document.documentElement.clientWidth;
 
-    if (screenWidth >= WIDTH_SCREEN_MOBILE && screenWidth < WIDTH_SCREEN_TABLET) {
-      counter = QUANTITY_CARDS_MOBILE;
-    } else if (screenWidth >= WIDTH_SCREEN_TABLET && screenWidth < WIDTH_SCREEN_DESKTOP) {
-      counter = QUANTITY_CARDS_TABLET;
-    } else {
-      counter = QUANTITY_CARDS_DESKTOP;
-    };
+    Object.keys(MOVIES_COUNTER_OBJ)
+      .sort((a, b) => a - b)
+      .forEach((key) => {
+        if (clientWidth > +key) {
+          countCards = MOVIES_COUNTER_OBJ[key];
+        }
+      });
 
-    setMoviesCounter(counter);
+    return countCards;
   }
 
   // -------------- ДОБАВЛЕНИЕ и УДАЛЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ ------------------------
@@ -196,9 +154,6 @@ function Movies(isLoggedIn, isLoading) {
     <section className="movies">
       <SearchForm
         onGetMovies={getMovies}
-        // moviesToggle={moviesToggle}
-        // moviesSearchRequest={moviesSearchRequest}
-        renderMovies={renderMovies}
         isDisabled={isDisabled}
       />
       {errorMessage && <span className="movies__error-message">{errorMessage}</span>}

@@ -12,29 +12,28 @@ function SearchForm({
   const [isToggle, setIsToggle] = useState(false);
 
   useEffect(() => {
-    setSearchRequest('');
+
     setIsToggle(false);
 
-    const localStorageMoviesToggle = localStorage.getItem('isToggle');
-    const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
+    if (pathname !== '/saved-movies') {
+      setSearchRequest('');
+      const localStorageMoviesToggle = localStorage.getItem('isToggle');
+      const localStorageMoviesSearchRequest = localStorage.getItem('moviesSearchRequest');
 
-    if (localStorageMoviesToggle && localStorageMoviesSearchRequest) {
-      setSearchRequest(localStorageMoviesSearchRequest);
+      if (localStorageMoviesToggle && localStorageMoviesSearchRequest) {
+        setSearchRequest(localStorageMoviesSearchRequest);
 
-      if (localStorageMoviesToggle === 'true') {
-        setIsToggle(true);
-      } else {
-        setIsToggle(false);
+        if (localStorageMoviesToggle === 'true') {
+          setIsToggle(true);
+        } else {
+          setIsToggle(false);
+        };
       };
-
-      // onGetMovies(localStorageMoviesSearchRequest, localStorageMoviesToggle);
     };
   }, [])
 
   function handleSearchRequest(evt) {
-    // setSearchRequest(evt.target.value);
     if (pathname === '/saved-movies') {
-      // onGetMovies(searchRequestSavedMovies, isToggle);
       setSearchRequestSavedMovies(evt.target.value);
     } else {
       setSearchRequest(evt.target.value);
@@ -44,8 +43,6 @@ function SearchForm({
   function handleSubmit(evt) {
     evt.preventDefault();
     setIsToggle(isToggle);
-    // onGetMovies(searchRequest, isToggle);
-    // setIsToggle(evt.target.checkbox.value);
     if (pathname === '/saved-movies') {
       onGetMovies(searchRequestSavedMovies, isToggle);
     } else {
@@ -56,8 +53,6 @@ function SearchForm({
   function handleToggle() {
     const isToggleValue = !isToggle;
     setIsToggle(isToggleValue);
-    // onGetMovies(searchRequest, isToggleValue);
-    // renderMovies(isToggleValue, searchRequest);
   };
 
   useEffect(() => {

@@ -11,20 +11,13 @@ function SavedMovies(isLoggedIn, isLoading) {
   const [savedMovies, setSavedMovies] = useState([]);
   const [savedMoviesToRender, setSavedMoviesToRender] = useState([]);
 
-  const [savedMoviesSearchRequest, setSavedMoviesSearchRequest] = useState('');
-  const [savedMoviesSearchResults, setSavedMoviesSearchResults] = useState([]);
-  const [shortSavedMovies, setShortSavedMovies] = useState([]);
-
   const [preloader, setPreloader] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  // const [isToggle, setIsToggle] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
   // -------------- ИЗНАЧАЛЬНОЕ ОТОБРАЖЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ -----------------
 
   useEffect(() => {
-    setSavedMoviesSearchRequest('');
-
     const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"));
     if (initialSavedMovies.length === 0) {
       setErrorMessage('У вас нет сохраненных фильмов. Подберите что-нибудь интересное на странице Фильмы');
@@ -44,17 +37,12 @@ function SavedMovies(isLoggedIn, isLoading) {
     setErrorMessage('');
 
     if (!searchRequest) {
-      console.log('searchRequest', searchRequest);
-
-      setSavedMoviesSearchRequest('');
-
       const initialSavedMovies = JSON.parse(localStorage.getItem("savedMovies"));
       if (initialSavedMovies.length === 0) {
         setErrorMessage('У вас нет сохраненных фильмов. Подберите что-нибудь интересное на странице Фильмы');
         setIsDisabled(true);
       } else if (initialSavedMovies.length > 0) {
         setSavedMovies(initialSavedMovies);
-        // setSavedMoviesToRender(initialSavedMovies);
         setIsDisabled(false);
 
         if (isToggle) {
@@ -69,7 +57,6 @@ function SavedMovies(isLoggedIn, isLoading) {
         setErrorMessage('При получении массива сохраненных фильмов что-то пошло не так');
       }
 
-      // setErrorMessage('Введите поисковый запрос или перезагрузите страницу!');
       return;
     }
 
@@ -81,11 +68,6 @@ function SavedMovies(isLoggedIn, isLoading) {
     const shortSavedMovies = savedMoviesSearchResults.filter((movie) => {
       return movie.duration <= SHORT_MOVIE;
     });
-
-    setSavedMoviesSearchRequest(searchRequest);
-    setSavedMoviesSearchResults(savedMoviesSearchResults);
-    setShortSavedMovies(shortSavedMovies);
-    // setIsToggle(isToggle);
 
     if (isToggle) {
       if (shortSavedMovies.length > 0) {
@@ -102,49 +84,18 @@ function SavedMovies(isLoggedIn, isLoading) {
     };
   };
 
-  function renderShortSavedMovies(isToggle, searchRequest) {
-    setErrorMessage('');
-    // setIsToggle(isToggle);
-
-    if (!searchRequest && isToggle) {
-      setSavedMoviesToRender(savedMovies.filter((movie) => {
-        return movie.duration <= SHORT_MOVIE;
-      }));
-    } else if (!searchRequest && !isToggle) {
-      setSavedMoviesToRender(savedMovies);
-    } else if (searchRequest && isToggle) {
-        if (shortSavedMovies.length > 0) {
-          setSavedMoviesToRender(shortSavedMovies);
-        } else {
-          setErrorMessage('Среди сохраненных фильмов нет короткометражек, соответствующих вашему запросу');
-        }
-    } else if (searchRequest && !isToggle) {
-        if (savedMoviesSearchResults.length > 0) {
-          setSavedMoviesToRender(savedMoviesSearchResults);
-        } else {
-          setErrorMessage('Среди сохраненных фильмов нет ни одного фильма, соответствующего вашему запросу');
-        }
-    } else {
-      setErrorMessage('Что-то пошло не так...');
-    }
-  };
-
     // ------------------------ УДАЛЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ ------------------------
 
-  async function savedMoviesToggle(movie, isToggle) {
+  async function savedMoviesToggle(movie, isSelected) {
     setErrorMessage('');
 
-    if (!isToggle) {
+    if (!isSelected) {
       try {
         await mainApi.deleteMovies(movie._id);
         const newSavedMovies = await mainApi.getMovies();
         localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
         setSavedMovies(newSavedMovies);
         setSavedMoviesToRender(newSavedMovies);
-        setSavedMoviesSearchResults(newSavedMovies);
-        setShortSavedMovies(newSavedMovies.filter((movie) => {
-          return movie.duration <= SHORT_MOVIE;
-        }));
       } catch (err) {
         console.log(`При удалении фильма что-то пошло не так. Ошибка: ${err}`);
       }
@@ -162,7 +113,6 @@ function SavedMovies(isLoggedIn, isLoading) {
       {!preloader && !errorMessage && savedMoviesToRender && (
         <MoviesCardList
           moviesToRender={savedMoviesToRender}
-          moviesRemains={[]}
           savedMoviesToggle={savedMoviesToggle}
           savedMovies={savedMovies}
         />

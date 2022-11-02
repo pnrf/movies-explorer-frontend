@@ -21,7 +21,7 @@ function MoviesCardList({
         }
       </ul>
 
-     {moviesRemains.length > 0 && isToggle === false && pathname !== '/saved-movies'
+     {moviesRemains && isToggle === false && pathname !== '/saved-movies'
         && (<button className="cards__button" type="button" name="more" onClick={renderMore}>Ещё</button>)
       }
     </section>
