@@ -113,8 +113,10 @@ function SavedMovies(isLoggedIn, isLoading) {
       {!preloader && !errorMessage && savedMoviesToRender && (
         <MoviesCardList
           moviesToRender={savedMoviesToRender}
+          moviesRemains={[]}
           savedMoviesToggle={savedMoviesToggle}
           savedMovies={savedMovies}
+          isToggle={false}
         />
       )}
     </section>
