@@ -26,11 +26,15 @@
 На страницах есть одинаковые блоки: они несколько раз используются в разных частях сайта. Повторно используемые компоненты нужно создавать на «Реакте» и использовать БЭМ для описания стилей.
 
 ### Ссылки
+- дизайн-макет: [Яндекс.Диск](https://disk.yandex.ru/d/aSdNN-FR5mZbyw)
+- критерии оценки работы: [Яндекс.Диск](https://disk.yandex.ru/i/qWf8pN6N5ZnwCA)
+- публичный api с БД фильмов: `https://api.nomoreparties.co/beatfilm-movies`
+
 - [План-график выполнения задач](https://github.com/users/pnrf/projects/1)
 - репозиторий backend: [movies-explorer-api](https://github.com/pnrf/movies-explorer-api)
 - репозиторий frontend: [movies-explorer-frontend](https://github.com/pnrf/movies-explorer-frontend)
 - cсылки на сайт, размещенный в Яндекс.Облаке:
   - Public IP Address: `51.250.79.113`
-  - Frontend: `pankratov.nomorepartiesxyz.ru`
-  - Backend: `api.pankratov.nomorepartiesxyz.ru`
-- дизайн-макет: [Яндекс.Диск](https://disk.yandex.ru/d/aSdNN-FR5mZbyw)
+  - Frontend: `https://pankratov.nomorepartiesxyz.ru`
+  - Backend: `https://api.pankratov.nomorepartiesxyz.ru`
+- ссылка на pull request: [level-3](https://github.com/pnrf/movies-explorer-frontend/pull/2)

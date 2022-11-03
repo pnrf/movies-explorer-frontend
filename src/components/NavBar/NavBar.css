@@ -20,11 +20,15 @@
   position: relative;
 }
 
+.navbar__hamburger_type_light {
+  background-color: #fff;
+}
+
 .navbar__hamburger::before {
   content: '';
   width: 22px;
   height: 2.5px;
-  background-color: #000;
+  background-color: inherit;
   position: absolute;
   top: 9px;
   left: 0;
@@ -34,7 +38,7 @@
   content: '';
   width: 22px;
   height: 2.5px;
-  background-color: #000;
+  background-color: inherit;
   position: absolute;
   top: 18px;
   left: 0;
@@ -185,7 +189,15 @@
     border-bottom: none;
   }
 
+  .navbar__menu-link_type_light {
+    color: #fff;
+  }
+
   .navbar__menu-account-link {
     margin: 0;
+  }
+
+  .navbar__menu-account-link_type_light {
+    color: #fff;
   }
 }

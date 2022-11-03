@@ -26,6 +26,8 @@
 }
 
 .nf-page__link {
+  border: none;
+  background-color: transparent;
   width: fit-content;
   align-self: center;
   color: #3456F3;

@@ -1,8 +1,9 @@
 import './NavBar.css';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 function NavBar() {
+  const { pathname } = useLocation();
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const handleMenuOpening = () => setIsMenuOpened(true);
   const handleMenuClosing = () => setIsMenuOpened(false);
@@ -11,23 +12,23 @@ function NavBar() {
     <>
       <div className="navbar">
         <div className="navbar__hamburger-overlay" onClick={handleMenuOpening}>
-          <div className="navbar__hamburger" />
+          <div className={`navbar__hamburger ${pathname === "/" && 'navbar__hamburger_type_light'}`} />
         </div>
 
         <section className="navbar__menu">
           <ul className="navbar__menu-list">
             <li className="navbar__menu-list-item">
               <NavLink
-                className="navbar__menu-link"
-                activeClassName="navbar__menu-link_active"
+                className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_type_light'} ${pathname === "/movies" && 'navbar__menu-link_active'}`}
+                activeclassname="navbar__menu-link_active"
                 onClick={handleMenuClosing}
                 to="/movies">Фильмы
               </NavLink>
             </li>
             <li className="navbar__menu-list-item">
               <NavLink
-                className="navbar__menu-link"
-                activeClassName="navbar__menu-link_active"
+                className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_type_light'} ${pathname === "/saved-movies" && 'navbar__menu-link_active'}`}
+                activeclassname="navbar__menu-link_active"
                 onClick={handleMenuClosing}
                 to="/saved-movies">Сохранённые фильмы
               </NavLink>
@@ -35,8 +36,8 @@ function NavBar() {
           </ul>
           <div className="navbar__menu-account">
             <NavLink
-              className="navbar__menu-account-link"
-              activeClassName="navbar__menu-account-link_active"
+              className={`navbar__menu-account-link ${pathname === "/" && 'navbar__menu-account-link_type_light'} ${pathname === "/profile" && 'navbar__menu-link_active'}`}
+              activeclassname="navbar__menu-account-link_active"
               onClick={handleMenuClosing}
               to="/profile">Аккаунт
             </NavLink>
@@ -51,24 +52,24 @@ function NavBar() {
             <ul className="navbar__menu-list">
               <li className="navbar__menu-list-item">
                 <NavLink
-                  className="navbar__menu-link"
-                  activeClassName="navbar__menu-link_active"
+                  className={`navbar__menu-link ${pathname === "/" && 'navbar__menu-link_active'}`}
+                  activeclassname="navbar__menu-link_active"
                   onClick={handleMenuClosing}
                   to="/">Главная
                 </NavLink>
               </li>
               <li className="navbar__menu-list-item">
                 <NavLink
-                  className="navbar__menu-link"
-                  activeClassName="navbar__menu-link_active"
+                  className={`navbar__menu-link ${pathname === "/movies" && 'navbar__menu-link_active'}`}
+                  activeclassname="navbar__menu-link_active"
                   onClick={handleMenuClosing}
                   to="/movies">Фильмы
                 </NavLink>
               </li>
               <li className="navbar__menu-list-item">
                 <NavLink
-                  className="navbar__menu-link"
-                  activeClassName="navbar__menu-link_active"
+                  className={`navbar__menu-link ${pathname === "/saved-movies" && 'navbar__menu-link_active'}`}
+                  activeclassname="navbar__menu-link_active"
                   onClick={handleMenuClosing}
                   to="/saved-movies">Сохранённые фильмы
                 </NavLink>
@@ -77,7 +78,7 @@ function NavBar() {
             <div className="navbar__menu-account">
               <NavLink
                 className="navbar__menu-account-link"
-                activeClassName="navbar__menu-account-link_active"
+                activeclassname="navbar__menu-account-link_active"
                 onClick={handleMenuClosing}
                 to="/profile">Аккаунт
               </NavLink>
